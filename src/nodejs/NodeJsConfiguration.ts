@@ -4,7 +4,7 @@ import * as File from "fs";
 import { Project } from "../project/Project";
 
 
-export class PackageConfiguration {
+export class NodeJsConfiguration {
     private readonly filePath: string;
 
     public constructor(project: Project) {
@@ -16,20 +16,20 @@ export class PackageConfiguration {
     }
 
     public getName(): string {
-        const packageJson: any = JSON.parse(File.readFileSync(this.filePath, "utf-8"));
+        const configuration: any = JSON.parse(File.readFileSync(this.filePath, "utf-8"));
 
-        return packageJson.name;
+        return configuration.name;
     }
 
     public getVersion(): string {
-        const packageJson: any = JSON.parse(File.readFileSync(this.filePath, "utf-8"));
+        const configuration: any = JSON.parse(File.readFileSync(this.filePath, "utf-8"));
 
-        return packageJson.version;
+        return configuration.version;
     }
 
     public getMainEntry(): string {
-        const packageJson: any = JSON.parse(File.readFileSync(this.filePath, "utf-8"));
+        const configuration: any = JSON.parse(File.readFileSync(this.filePath, "utf-8"));
 
-        return packageJson.main;
+        return configuration.main;
     }
 }

@@ -2,7 +2,7 @@ import * as Path from "path";
 import * as File from "fs";
 
 import { Project } from "../project/Project";
-import { PackageConfiguration } from "../nodejs/PackageConfiguration";
+import { NodeJsConfiguration } from "../nodejs/NodeJsConfiguration";
 
 
 export class Manifest {
@@ -17,7 +17,7 @@ export class Manifest {
     }
 
     public generate(): void {
-        const packageConfiguration: PackageConfiguration = this.project.getPackageConfiguration();
+        const packageConfiguration: NodeJsConfiguration = this.project.getNodeJsConfiguration();
         const name: string = packageConfiguration.getName();
         const version: string = packageConfiguration.getVersion();
         const entry: string = packageConfiguration.getMainEntry();

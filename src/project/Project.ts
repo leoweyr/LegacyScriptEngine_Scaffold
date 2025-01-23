@@ -1,13 +1,11 @@
-import { PackageConfiguration } from "../nodejs/PackageConfiguration";
-import { Manifest } from "../packager/Manifest";
+import { NodeJsConfiguration } from "../nodejs/NodeJsConfiguration";
 
 
 export interface Project {
     getName(): string;
     getPath(): string;
     getBuiltPath(): string;
-    getPackageConfiguration(): PackageConfiguration;
-    getManifest(): Manifest;
+    getNodeJsConfiguration(): NodeJsConfiguration;
     isBuilt(): boolean;
     isManifest(): boolean;
 }
