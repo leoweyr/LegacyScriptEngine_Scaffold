@@ -17,6 +17,9 @@
     ],
     "author": "leoweyr <contact@leoweyr.com>",
     "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^22.10.7"
+    },
     "dependencies": {
         "typescript": "^5.7.3"
     },
