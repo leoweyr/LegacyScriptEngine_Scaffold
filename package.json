@@ -1,0 +1,27 @@
+{
+    "name": "legacy-script-engine-scaffold",
+    "version": "0.0.0",
+    "description": "A utility for assisting in the development of Legacy Script Engine plugins, supporting a native development experience on the Node.js platform.",
+    "bugs": "https://github.com/leoweyr/LSEScaffold/issues",
+    "scripts": {
+        "clean": "tsc --build --clean",
+        "build": "npm run clean & tsc"
+    },
+    "keywords": [
+        "levilamina",
+        "minecraft",
+        "bedrock-dedicated-server",
+        "utility",
+        "scaffold",
+        "npx"
+    ],
+    "author": "leoweyr <contact@leoweyr.com>",
+    "license": "MIT",
+    "dependencies": {
+        "typescript": "^5.7.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/leoweyr/LSEScaffold"
+    }
+}
