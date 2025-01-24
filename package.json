@@ -18,10 +18,12 @@
     "author": "leoweyr <contact@leoweyr.com>",
     "license": "MIT",
     "devDependencies": {
-        "@types/node": "^22.10.7"
+        "@types/node": "^22.10.7",
+        "@types/archiver": "^6.0.3"
     },
     "dependencies": {
-        "typescript": "^5.7.3"
+        "typescript": "^5.7.3",
+        "archiver": "^7.0.1"
     },
     "repository": {
         "type": "git",
