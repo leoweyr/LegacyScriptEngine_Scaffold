@@ -1,8 +1,12 @@
 import * as Path from "path";
+import * as File from "fs";
 
 import ts, { ParsedCommandLine, Program } from "typescript";
 
 import { Project } from "../project/Project";
+import { TypeScriptConfigurationParseError } from "./TypeScriptConfigurationParseError";
+import { TypeScriptConfigurationFileNotFoundError } from "./TypeScriptConfigurationFileNotFoundError";
+import { TypeScriptConfigurationMissingError } from "./TypeScriptConfigurationMissingError";
 
 
 export class TypeScriptConfiguration {
@@ -10,7 +14,7 @@ export class TypeScriptConfiguration {
         const file: any = ts.readConfigFile(filePath, ts.sys.readFile);
 
         if (file.error) {
-            throw new Error("Error reading tsconfig.json.");
+            throw new TypeScriptConfigurationParseError(filePath);
         }
 
         const parsedCommandLine: ParsedCommandLine = ts.parseJsonConfigFileContent(
@@ -20,7 +24,7 @@ export class TypeScriptConfiguration {
         );
 
         if (parsedCommandLine.errors.length > 0) {
-            throw new Error(`Error parsing tsconfig.json: ${JSON.stringify(parsedCommandLine.errors)}.`);
+            throw new TypeScriptConfigurationParseError(filePath, parsedCommandLine.errors);
         }
 
         return parsedCommandLine;
@@ -30,6 +34,10 @@ export class TypeScriptConfiguration {
 
     public constructor(project: Project) {
         this.filePath = Path.join(project.getPath(), "tsconfig.json");
+
+        if (!File.existsSync(this.filePath)) {
+            throw new TypeScriptConfigurationFileNotFoundError(project.getPath());
+        }
     }
 
     public getEmittedDirectory(): string {
@@ -37,7 +45,7 @@ export class TypeScriptConfiguration {
         const emittedDirectory: string | undefined = parsedCommandLine.options.outDir;
 
         if (!emittedDirectory) {
-            throw new Error("No `outDir` configuration in tsconfig.json.");
+            throw new TypeScriptConfigurationMissingError(this.filePath, "outDir");
         }
 
         return emittedDirectory;

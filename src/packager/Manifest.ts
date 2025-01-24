@@ -3,6 +3,8 @@ import * as File from "fs";
 
 import { Project } from "../project/Project";
 import { NodeJsConfiguration } from "../nodejs/NodeJsConfiguration";
+import { ManifestFileNotFoundError } from "./ManifestFileNotFoundError";
+import { ManifestConfigurationMissingError } from "./ManifestConfigurationMissingError";
 
 
 export class Manifest {
@@ -16,11 +18,26 @@ export class Manifest {
         return Path.join(this.project.getBuiltPath(), "manifest.json");
     }
 
-    public generate(): void {
-        const packageConfiguration: NodeJsConfiguration = this.project.getNodeJsConfiguration();
-        const name: string = packageConfiguration.getName();
-        const version: string = packageConfiguration.getVersion();
-        const entry: string = packageConfiguration.getMainEntry();
+    public getName(): string {
+        if (!File.existsSync(this.getPath())) {
+            throw new ManifestFileNotFoundError(this.project.getBuiltPath());
+        }
+
+        const manifest: any = JSON.parse(File.readFileSync(this.getPath(), "utf-8"));
+        const name: string = manifest.name;
+
+        if (!name) {
+            throw new ManifestConfigurationMissingError(this.getPath(), "name");
+        }
+
+        return name;
+    }
+
+    public generate(): string {
+        const nodeJsConfiguration: NodeJsConfiguration = this.project.getNodeJsConfiguration();
+        const name: string = nodeJsConfiguration.getName();
+        const version: string = nodeJsConfiguration.getVersion();
+        const entry: string = nodeJsConfiguration.getMainEntry();
 
         const manifest = {
             "name": name,
@@ -31,6 +48,8 @@ export class Manifest {
         };
 
         File.writeFileSync(this.getPath(), JSON.stringify(manifest, null, 2), "utf-8");
+
+        return `The manifest has been generated at ${this.getPath()}.`;
     }
 
     public static isValid(filePath: string): boolean {

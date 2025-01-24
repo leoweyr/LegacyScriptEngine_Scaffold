@@ -56,7 +56,7 @@ export class TypeScriptProject implements Project {
     }
 
     public getName(): string {
-        return this.nodeJsConfiguration.getName();
+        return this.manifest.getName();
     }
 
     public getPath(): string {
@@ -69,6 +69,10 @@ export class TypeScriptProject implements Project {
 
     public getNodeJsConfiguration(): NodeJsConfiguration {
         return this.nodeJsConfiguration;
+    }
+
+    public getManifest(): Manifest {
+        return this.manifest;
     }
 
     public isBuilt(): boolean {

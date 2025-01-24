@@ -15,7 +15,7 @@ export class Packager {
         this.project = project;
     }
 
-    public async package(): Promise<void> {
+    public async package(): Promise<string> {
         if (!this.project.isBuilt()) {
             throw new ProjectNotBuiltError();
         }
@@ -42,5 +42,7 @@ export class Packager {
         archive.pipe(outputStream);
         archive.directory(this.project.getBuiltPath(), false);
         await archive.finalize();
+
+        return `The package has been generated at ${outputStream.path}.`;
     }
 }
