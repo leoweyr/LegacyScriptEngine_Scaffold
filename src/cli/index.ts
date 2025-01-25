@@ -7,6 +7,8 @@ import { CliLogger } from "./CliLogger";
 import { TypeScriptProject } from "../project/TypeScriptProject";
 import { CliLoggableError } from "./CliLoggableError";
 import { Packager } from "../packager/Packager";
+import { LevilaminaServer } from "../deployment/LevilaminaServer";
+import { PluginPackage } from "../packager/PluginPackage";
 
 
 program
@@ -41,6 +43,33 @@ program
             const packager: Packager = new Packager(project);
 
             const successMessage: string = await packager.package();
+            logger.success(successMessage);
+        } catch (error) {
+            logger.error(error as CliLoggableError);
+        }
+    });
+
+program
+    .command("deploy")
+    .description("deploy the Legacy Script Engine plugin package to the local Levilamina server")
+    .argument("<path>", "specific Levilamina server working directory")
+    .action(async (path: string): Promise<void> => {
+        const logger = new CliLogger("deploy");
+
+        try {
+            const project: TypeScriptProject = TypeScriptProject.getInstance();
+            const packager: Packager = new Packager(project);
+            const levilaminaServer: LevilaminaServer = new LevilaminaServer(path);
+            const pluginPackage: PluginPackage = packager.getPluginPackage();
+
+            try {
+                levilaminaServer.removePlugin(project.getName());
+            } catch (error) {
+                // Do nothing if the plugin does not exist.
+            }
+
+            const successMessage: string = await levilaminaServer.importPlugin(pluginPackage);
+
             logger.success(successMessage);
         } catch (error) {
             logger.error(error as CliLoggableError);

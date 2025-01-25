@@ -1,6 +1,6 @@
 {
     "name": "legacy-script-engine-scaffold",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "A utility for assisting in the development of Legacy Script Engine plugins.",
     "bugs": "https://github.com/leoweyr/LSEScaffold/issues",
     "bin": {
@@ -13,6 +13,7 @@
         "clean": "tsc --build --clean",
         "compile": "tsc",
         "build": "npm run clean && npm run compile",
+        "install": "npm run build && npm link",
         "package": "npm run build && npm pack",
         "deploy": "npm run package && npm publish"
     },
@@ -29,12 +30,14 @@
     "license": "MIT",
     "devDependencies": {
         "@types/node": "^22.10.7",
-        "@types/archiver": "^6.0.3"
+        "@types/archiver": "^6.0.3",
+        "@types/unzipper": "^0.10.10"
     },
     "dependencies": {
         "typescript": "^5.7.3",
         "archiver": "^7.0.1",
-        "commander": "^13.1.0"
+        "commander": "^13.1.0",
+        "unzipper": "^0.12.3"
     },
     "repository": {
         "type": "git",
