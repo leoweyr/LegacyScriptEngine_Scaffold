@@ -1,11 +1,20 @@
 {
     "name": "legacy-script-engine-scaffold",
-    "version": "0.0.0",
-    "description": "A utility for assisting in the development of Legacy Script Engine plugins, supporting a native development experience on the Node.js platform.",
+    "version": "0.1.0",
+    "description": "A utility for assisting in the development of Legacy Script Engine plugins.",
     "bugs": "https://github.com/leoweyr/LSEScaffold/issues",
+    "bin": {
+        "lses": "dist/cli/index.js"
+    },
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "clean": "tsc --build --clean",
-        "build": "npm run clean & tsc"
+        "compile": "tsc",
+        "build": "npm run clean && npm run compile",
+        "package": "npm run build && npm pack",
+        "deploy": "npm run package && npm publish"
     },
     "keywords": [
         "levilamina",
@@ -13,12 +22,19 @@
         "bedrock-dedicated-server",
         "utility",
         "scaffold",
+        "cli",
         "npx"
     ],
     "author": "leoweyr <contact@leoweyr.com>",
     "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^22.10.7",
+        "@types/archiver": "^6.0.3"
+    },
     "dependencies": {
-        "typescript": "^5.7.3"
+        "typescript": "^5.7.3",
+        "archiver": "^7.0.1",
+        "commander": "^13.1.0"
     },
     "repository": {
         "type": "git",
