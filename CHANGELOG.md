@@ -1,3 +1,11 @@
+# [0.2.0](https://github.com/leoweyr/LSEScaffold/compare/v0.1.0...v0.2.0) (2025-01-25)
+
+### Features
+
+- **cli:** add support for local deployment of Legacy Script Engine plugins ([ea9ef70](https://github.com/leoweyr/LSEScaffold/commit/ea9ef70701d127b2b114f503102359dbffbea673))
+- enable deployment of plugins to local Levilamina server ([6aeec36](https://github.com/leoweyr/LSEScaffold/commit/6aeec36daa2653f3563c00a06e53880b2293d024))
+- introduce handling for the project-generated plugin package ([e51a169](https://github.com/leoweyr/LSEScaffold/commit/e51a1691c39bf3c8ee515fc2bdc072e89d8ff0de))
+
 # [0.1.0](https://github.com/leoweyr/LSEScaffold/compare/13da1825083f91d0b7fed1ffc5f56ccc3159695f...v0.1.0) (2025-01-25)
 
 ### Features
