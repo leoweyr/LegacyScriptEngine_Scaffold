@@ -25,3 +25,13 @@ Package the Legacy Script Engine plugin:
 ```bash
 npx lses pack
 ```
+
+Deploy the Legacy Script Engine plugin package to the local Levilamina server:
+
+```bash
+npx lses deploy <path>
+```
+
+| Argument | Description                                   | Type   |
+| -------- | --------------------------------------------- | ------ |
+| `<path>` | Specific Levilamina server working directory. | String |
