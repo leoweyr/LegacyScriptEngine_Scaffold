@@ -64,7 +64,7 @@ export class TypeScriptProject implements Project {
     }
 
     public getBuiltPath(): string {
-        return this.typeScriptConfiguration.getEmittedDirectory();
+        return Path.join(this.typeScriptConfiguration.getEmittedDirectory());
     }
 
     public getNodeJsConfiguration(): NodeJsConfiguration {
