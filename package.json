@@ -1,6 +1,6 @@
 {
     "name": "legacy-script-engine-scaffold",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "A utility for assisting in the development of Legacy Script Engine plugins.",
     "bugs": "https://github.com/leoweyr/LSEScaffold/issues",
     "bin": {

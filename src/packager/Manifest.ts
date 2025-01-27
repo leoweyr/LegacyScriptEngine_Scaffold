@@ -5,6 +5,7 @@ import { Project } from "../project/Project";
 import { NodeJsConfiguration } from "../nodejs/NodeJsConfiguration";
 import { ManifestFileNotFoundError } from "./ManifestFileNotFoundError";
 import { ManifestConfigurationMissingError } from "./ManifestConfigurationMissingError";
+import { NodeJsConfigurationMainError } from "../nodejs/NodeJsConfigurationMainError";
 
 
 export class Manifest {
@@ -37,13 +38,18 @@ export class Manifest {
         const nodeJsConfiguration: NodeJsConfiguration = this.project.getNodeJsConfiguration();
         const name: string = nodeJsConfiguration.getName();
         const version: string = nodeJsConfiguration.getVersion();
-        const entry: string = nodeJsConfiguration.getMainEntry();
+        const absoluteEntry: string = Path.join(this.project.getPath(), nodeJsConfiguration.getMainEntry());
+        const relativeEntry: string = absoluteEntry.split(`${this.project.getBuiltPath()}\\`).join("");
+
+        if (relativeEntry === absoluteEntry) {
+            throw new NodeJsConfigurationMainError();
+        }
 
         const manifest = {
             "name": name,
             "version": version,
             "type": "lse-nodejs",
-            "entry": entry,
+            "entry": relativeEntry,
             "dependencies": [{"name": "legacy-script-engine-nodejs"}]
         };
 
