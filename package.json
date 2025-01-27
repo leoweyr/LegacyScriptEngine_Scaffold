@@ -13,7 +13,7 @@
         "clean": "tsc --build --clean",
         "compile": "tsc",
         "build": "npm run clean && npm run compile",
-        "install": "npm run build && npm link",
+        "local-deploy": "npm run build && npm link",
         "package": "npm run build && npm pack",
         "deploy": "npm run package && npm publish"
     },
