@@ -1,13 +1,14 @@
 {
-    "name": "legacy-script-engine-scaffold",
+    "name": "@levilamina/scaffold",
     "version": "0.2.1",
     "description": "A utility for assisting in the development of Legacy Script Engine plugins.",
-    "bugs": "https://github.com/leoweyr/LSEScaffold/issues",
+    "bugs": "https://github.com/leoweyr/LegacyScriptEngine_Scaffold/issues",
     "bin": {
         "lses": "dist/cli/index.js"
     },
     "files": [
-        "dist"
+        "dist",
+        "CHANGELOG.md"
     ],
     "scripts": {
         "clean": "rimraf dist",
@@ -15,7 +16,7 @@
         "build": "npm run clean && npm run compile",
         "local-deploy": "npm run build && npm link",
         "package": "npm run build && npm pack",
-        "deploy": "npm run package && npm publish"
+        "deploy": "npm run package && npm publish --access=public"
     },
     "keywords": [
         "levilamina",
@@ -42,6 +43,6 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/leoweyr/LSEScaffold"
+        "url": "https://github.com/leoweyr/LegacyScriptEngine_Scaffold"
     }
 }
