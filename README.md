@@ -9,7 +9,7 @@ A utility for assisting in the development of Legacy Script Engine plugins, supp
 It is a non-intrusive tool, meaning it does not require any mandatory files to be kept in your project. However, it is recommended to add it as a development dependency to your environment for convenient usage:
 
 ```bash
-npm install @levilamina/scaffold --save-dev
+npm install @levimc-lse/scaffold --save-dev
 ```
 
 ## 🚀 Usage
