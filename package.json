@@ -1,5 +1,5 @@
 {
-    "name": "@levilamina/scaffold",
+    "name": "@levimc-lse/scaffold",
     "version": "0.2.1",
     "description": "A utility for assisting in the development of Legacy Script Engine plugins.",
     "bugs": "https://github.com/leoweyr/LegacyScriptEngine_Scaffold/issues",
