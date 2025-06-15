@@ -16,7 +16,7 @@ export class Packager {
     public constructor(project: Project) {
         this.project = project;
 
-        const packagePath: string = Path.join(this.project.getPath(), `${this.project.getName()}.zip`);
+        const packagePath: string = Path.join(this.project.getPath(), `${this.project.getName().replace("/", "-").replace("@", "")}.zip`);
         this.pluginPackage = new PluginPackage(this.project.getName(), packagePath);
     }
 

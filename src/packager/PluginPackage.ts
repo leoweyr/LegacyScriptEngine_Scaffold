@@ -29,7 +29,7 @@ export class PluginPackage {
         }
 
         const pluginPackage: Unzipper.CentralDirectory = await Unzipper.Open.file(this.filePath);
-        const extractedPath: string = Path.join(destinationPath, this.name);
+        const extractedPath: string = Path.join(destinationPath, this.name.replace("/", "-").replace("@", ""));
         await pluginPackage.extract({path: extractedPath});
     }
 }
