@@ -7,7 +7,8 @@
         "lses": "dist/cli/index.js"
     },
     "files": [
-        "dist"
+        "dist",
+        "CHANGELOG.md"
     ],
     "scripts": {
         "clean": "rimraf dist",
