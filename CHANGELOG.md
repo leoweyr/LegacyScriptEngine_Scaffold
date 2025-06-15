@@ -1,3 +1,12 @@
+## [0.2.2](https://github.com/leoweyr/LSEScaffold/compare/v0.2.1...v0.2.2) (2025-06-15)
+
+
+### Bug Fixes
+
+* enable proper handling of multi-repo projects ([7f95b9b](https://github.com/leoweyr/LSEScaffold/commit/7f95b9ba5a5625e5bc5131746f050d525b6a0186))
+
+
+
 ## [0.2.1](https://github.com/leoweyr/LSEScaffold/compare/v0.2.0...v0.2.1) (2025-01-27)
 
 
@@ -8,7 +17,7 @@
 
 
 
-# [0.2.0](https://github.com/leoweyr/LSEScaffold/compare/v0.1.0...v0.2.0) (2025-01-25)
+## [0.2.0](https://github.com/leoweyr/LSEScaffold/compare/v0.1.0...v0.2.0) (2025-01-25)
 
 
 ### Features
@@ -19,7 +28,7 @@
 
 
 
-# [0.1.0](https://github.com/leoweyr/LSEScaffold/compare/13da1825083f91d0b7fed1ffc5f56ccc3159695f...v0.1.0) (2025-01-25)
+## [0.1.0](https://github.com/leoweyr/LSEScaffold/compare/13da1825083f91d0b7fed1ffc5f56ccc3159695f...v0.1.0) (2025-01-25)
 
 
 ### Features
