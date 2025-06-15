@@ -29,7 +29,7 @@ export class LevilaminaServer {
     }
 
     public removePlugin(pluginName: string): void {
-        const pluginPath: string = Path.join(this.pluginDirectory, pluginName);
+        const pluginPath: string = Path.join(this.pluginDirectory, pluginName.replace("/", "-").replace("@",""));
 
         if (File.existsSync(pluginPath)) {
             LevilaminaServer.deleteDirectory(pluginPath);

@@ -36,7 +36,7 @@ export class Manifest {
 
     public generate(): string {
         const nodeJsConfiguration: NodeJsConfiguration = this.project.getNodeJsConfiguration();
-        const name: string = nodeJsConfiguration.getName();
+        const name: string = nodeJsConfiguration.getName().replace("/", "-").replace("@", "");
         const version: string = nodeJsConfiguration.getVersion();
         const absoluteEntry: string = Path.join(this.project.getPath(), nodeJsConfiguration.getMainEntry());
         const relativeEntry: string = absoluteEntry.split(`${this.project.getBuiltPath()}\\`).join("");

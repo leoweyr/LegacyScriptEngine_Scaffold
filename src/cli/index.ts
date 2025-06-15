@@ -59,16 +59,16 @@ program
         try {
             const project: TypeScriptProject = TypeScriptProject.getInstance();
             const packager: Packager = new Packager(project);
-            const levilaminaServer: LevilaminaServer = new LevilaminaServer(path);
+            const leviLaminaServer: LevilaminaServer = new LevilaminaServer(path);
             const pluginPackage: PluginPackage = packager.getPluginPackage();
 
             try {
-                levilaminaServer.removePlugin(project.getName());
+                leviLaminaServer.removePlugin(project.getName());
             } catch (error) {
                 // Do nothing if the plugin does not exist.
             }
 
-            const successMessage: string = await levilaminaServer.importPlugin(pluginPackage);
+            const successMessage: string = await leviLaminaServer.importPlugin(pluginPackage);
 
             logger.success(successMessage);
         } catch (error) {
