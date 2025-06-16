@@ -1,5 +1,7 @@
 # Legacy Script Engine Scaffold
 
+#### English | [简体中文](README-zh_cn.md)
+
 A utility for assisting in the development of Legacy Script Engine plugins, supporting a native development experience on the Node.js platform.
 
 > Only TypeScript projects are supported at the moment.
