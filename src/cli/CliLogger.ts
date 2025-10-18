@@ -1,4 +1,4 @@
-import { CliLoggableError } from "./CliLoggableError";
+import { CliLoggableError } from "./exceptions/CliLoggableError";
 
 
 export class CliLogger {

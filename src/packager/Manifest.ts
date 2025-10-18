@@ -3,9 +3,9 @@ import * as File from "fs";
 
 import { Project } from "../project/Project";
 import { NodeJsConfiguration } from "../nodejs/NodeJsConfiguration";
-import { ManifestFileNotFoundError } from "./ManifestFileNotFoundError";
-import { ManifestConfigurationMissingError } from "./ManifestConfigurationMissingError";
-import { NodeJsConfigurationMainError } from "../nodejs/NodeJsConfigurationMainError";
+import { ManifestFileNotFoundError } from "./exceptions/ManifestFileNotFoundError";
+import { ManifestConfigurationMissingError } from "./exceptions/ManifestConfigurationMissingError";
+import { NodeJsConfigurationMainError } from "../nodejs/exceptions/NodeJsConfigurationMainError";
 
 
 export class Manifest {

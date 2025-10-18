@@ -3,11 +3,11 @@ import * as Path from "path";
 
 import { NodeSSH, SSHExecCommandResponse } from "node-ssh";
 
-import { LeviLaminaPluginNotFoundError } from "./LeviLaminaPluginNotFoundError";
-import { RemoteSSHConnectionError } from "./RemoteSSHConnectionError";
+import { LeviLaminaPluginNotFoundError } from "./exceptions/LeviLaminaPluginNotFoundError";
+import { RemoteSSHConnectionError } from "./exceptions/RemoteSSHConnectionError";
 import { PluginPackage } from "../packager/PluginPackage";
-import { RemoteSSHFileUploadError } from "./RemoteSSHFileUploadError";
-import { RemotePluginInstallationError } from "./RemotePluginInstallationError";
+import { RemoteSSHFileUploadError } from "./exceptions/RemoteSSHFileUploadError";
+import { RemotePluginInstallationError } from "./exceptions/RemotePluginInstallationError";
 
 
 export class LeviLaminaServer {

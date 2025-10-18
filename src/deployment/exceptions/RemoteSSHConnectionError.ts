@@ -1,5 +1,5 @@
-import { CliLoggableError } from "../cli/CliLoggableError";
-import { LeviLaminaServer } from "./LeviLaminaServer";
+import { CliLoggableError } from "../../cli/exceptions/CliLoggableError";
+import { LeviLaminaServer } from "../LeviLaminaServer";
 
 
 export class RemoteSSHConnectionError extends Error implements CliLoggableError {

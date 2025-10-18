@@ -1,4 +1,4 @@
-import { CliLoggableError } from "../cli/CliLoggableError";
+import { CliLoggableError } from "../../cli/exceptions/CliLoggableError";
 import { Diagnostic } from "typescript";
 
 

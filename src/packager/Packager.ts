@@ -5,8 +5,8 @@ import archiver, { Archiver, ArchiverError } from "archiver";
 
 import { Project } from "../project/Project";
 import { PluginPackage } from "./PluginPackage";
-import { ProjectNotBuiltError } from "./ProjectNotBuiltError";
-import { ProjectNotManifestedError } from "./ProjectNotManifestedError";
+import { ProjectNotBuiltError } from "./exceptions/ProjectNotBuiltError";
+import { ProjectNotManifestedError } from "./exceptions/ProjectNotManifestedError";
 
 
 export class Packager {

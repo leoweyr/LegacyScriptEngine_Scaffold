@@ -5,7 +5,7 @@ import { program } from "commander";
 
 import { CliLogger } from "./CliLogger";
 import { TypeScriptProject } from "../project/TypeScriptProject";
-import { CliLoggableError } from "./CliLoggableError";
+import { CliLoggableError } from "./exceptions/CliLoggableError";
 import { Packager } from "../packager/Packager";
 import { LeviLaminaServer } from "../deployment/LeviLaminaServer";
 import { PluginPackage } from "../packager/PluginPackage";

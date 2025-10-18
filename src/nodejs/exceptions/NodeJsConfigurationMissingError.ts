@@ -1,4 +1,4 @@
-import { CliLoggableError } from "../cli/CliLoggableError";
+import { CliLoggableError } from "../../cli/exceptions/CliLoggableError";
 
 
 export class NodeJsConfigurationMissingError extends Error implements CliLoggableError {
