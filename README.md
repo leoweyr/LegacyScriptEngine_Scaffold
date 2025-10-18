@@ -26,15 +26,27 @@ Package the Legacy Script Engine plugin:
 npx lses pack
 ```
 
-Deploy the Legacy Script Engine plugin package to the local LeviLamina server:
+Deploy the Legacy Script Engine plugin package to the LeviLamina server:
 
 ```bash
-npx lses deploy <path>
+npx lses deploy <path> [options]
 ```
 
 | Argument | Description                                   | Type   |
-| -------- | --------------------------------------------- | ------ |
+|----------|-----------------------------------------------|--------|
 | `<path>` | Specific LeviLamina server working directory. | String |
+
+| Option                            | Description                     | Type    | Default |
+|-----------------------------------|---------------------------------|---------|---------|
+| `-h, --host <remoteHost>`         | Remote Windows OpenSSH host     | String  |         |
+| `-P, --port <remotePort>`         | Remote Windows OpenSSH port     | Integer | 22      |
+| `-u, --username <remoteUsername>` | Remote Windows OpenSSH username | String  |         |
+| `-p, --password <remotePassword>` | Remote Windows OpenSSH password | String  |         |
+
+> ⚠️ **Known Issue**
+>
+> When deploying to a remote LeviLamina server where the target plugin has never been installed before, the local terminal may still be waiting after the deployment task is completed, please use CTRL + C to manually terminate the local terminal.
+
 
 ## ❗ Important
 

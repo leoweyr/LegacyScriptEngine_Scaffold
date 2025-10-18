@@ -7,7 +7,7 @@ import { CliLogger } from "./CliLogger";
 import { TypeScriptProject } from "../project/TypeScriptProject";
 import { CliLoggableError } from "./CliLoggableError";
 import { Packager } from "../packager/Packager";
-import { LevilaminaServer } from "../deployment/LevilaminaServer";
+import { LeviLaminaServer } from "../deployment/LeviLaminaServer";
 import { PluginPackage } from "../packager/PluginPackage";
 
 
@@ -51,19 +51,37 @@ program
 
 program
     .command("deploy")
-    .description("deploy the Legacy Script Engine plugin package to the local Levilamina server")
-    .argument("<path>", "specific Levilamina server working directory")
-    .action(async (path: string): Promise<void> => {
+    .description("deploy the Legacy Script Engine plugin package to the LeviLamina server")
+    .argument("<path>", "specific LeviLamina server working directory")
+    .option("-h, --host <remoteHost>", "remote Windows OpenSSH host")
+    .option("-P, --port <remotePort>", "remote Windows OpenSSH port", "22")
+    .option("-u, --username <remoteUsername>", "remote Windows OpenSSH username")
+    .option("-p, --password <remotePassword>", "remote Windows OpenSSH password")
+    .action(async (
+        path: string,
+        options: {
+            host?: string;
+            port?: number;
+            username?: string;
+            password?: string;
+        }
+    ): Promise<void> => {
         const logger = new CliLogger("deploy");
 
         try {
             const project: TypeScriptProject = TypeScriptProject.getInstance();
             const packager: Packager = new Packager(project);
-            const leviLaminaServer: LevilaminaServer = new LevilaminaServer(path);
+            const leviLaminaServer: LeviLaminaServer = new LeviLaminaServer(
+                path,
+                options.host,
+                options.port,
+                options.username,
+                options.password
+            );
             const pluginPackage: PluginPackage = packager.getPluginPackage();
 
             try {
-                leviLaminaServer.removePlugin(project.getName());
+                await leviLaminaServer.removePlugin(project.getName());
             } catch (error) {
                 // Do nothing if the plugin does not exist.
             }
