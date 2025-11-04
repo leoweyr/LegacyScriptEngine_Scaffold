@@ -18,7 +18,7 @@ export class ManifestFileNotFoundError extends Error implements CliLoggableError
 
     public getSuggestion(): Array<string> {
         const suggestion: Array<string> = new Array<string>();
-        suggestion.push("Try `npx lses manifest` to manifest the project.");
+        suggestion.push("Try `npx lses manifest` to manifest the project before.");
 
         return suggestion;
     }

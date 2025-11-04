@@ -1,6 +1,6 @@
 {
     "name": "@levimc-lse/scaffold",
-    "version": "0.2.2",
+    "version": "1.0.0-rc.1",
     "description": "A utility for assisting in the development of Legacy Script Engine plugins.",
     "bugs": "https://github.com/leoweyr/LegacyScriptEngine_Scaffold/issues",
     "bin": {
@@ -33,14 +33,16 @@
         "rimraf": "^6.0.1",
         "@types/node": "^22.10.7",
         "@types/archiver": "^6.0.3",
-        "@types/unzipper": "^0.10.10"
+        "@types/unzipper": "^0.10.10",
+        "@types/ssh2": "^1.15.5"
     },
     "dependencies": {
         "typescript": "^5.7.3",
         "archiver": "^7.0.1",
         "commander": "^13.1.0",
         "unzipper": "^0.12.3",
-        "node-ssh": "^13.2.1"
+        "node-ssh": "^13.2.1",
+        "ssh2": "^1.17.0"
     },
     "repository": {
         "type": "git",

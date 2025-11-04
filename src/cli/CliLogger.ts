@@ -42,4 +42,10 @@ export class CliLogger {
             throw error;
         }
     }
+
+    public info(msg: string): void {
+        console.log(
+            `ℹ️ ${CliLogger.TOOL_NAME}::${this.methodName}: ${msg}`
+        );
+    }
 }

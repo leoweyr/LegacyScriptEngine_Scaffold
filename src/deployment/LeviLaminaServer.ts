@@ -1,8 +1,14 @@
 import * as File from "fs";
 import * as Path from "path";
+import { EventEmitter } from "node:events";
+import { ChildProcessWithoutNullStreams, spawn } from "node:child_process";
+import { Socket } from "node:net";
 
+import { Client, ClientChannel, ClientErrorExtensions } from "ssh2";
 import { NodeSSH, SSHExecCommandResponse } from "node-ssh";
 
+import { CliLogger } from "../cli/CliLogger";
+import { SocketServer } from "../debugger/SocketServer";
 import { LeviLaminaPluginNotFoundError } from "./exceptions/LeviLaminaPluginNotFoundError";
 import { RemoteSSHConnectionError } from "./exceptions/RemoteSSHConnectionError";
 import { PluginPackage } from "../packager/PluginPackage";
@@ -51,8 +57,107 @@ export class LeviLaminaServer {
         this.pluginDirectory = Path.join(rootPath, "plugins");
     }
 
+    public async start(aliasName: string, logger: CliLogger): Promise<void> {
+        const serverExecutedPath: string = Path.join(this.getRootPath(), "bedrock_server_mod.exe");
+        const serverOutputReceiver: EventEmitter = new EventEmitter();
+        let serverCommandSender: (command: string) => void;
+
+        if (this.remoteHost !== "localhost") {
+            const remoteSSH: Client = new Client();
+            let remoteSSHChannel: ClientChannel;
+
+            remoteSSH
+                .on("ready", (): void => {
+                    remoteSSH.exec(serverExecutedPath, (error: Error | undefined, channel: ClientChannel): void => {
+                        if (error) throw error;
+
+                        remoteSSHChannel = channel;
+
+                        channel
+                            .on("data", (chunk: Buffer): void => {
+                                logger.info(chunk.toString());
+                                serverOutputReceiver.emit("output", chunk.toString());
+                            })
+                            .on("close", (code: number, signal: string): void => {
+                                remoteSSH.end();
+                                process.exit(0);
+                            });
+
+                        process.stdin.pipe(channel);
+                    });
+                })
+                .connect({
+                   host: this.remoteHost,
+                   port: this.remotePort,
+                   username: this.remoteUsername,
+                   password: this.remotePassword
+                });
+
+                serverCommandSender = (command: string): void => {
+                    if (remoteSSHChannel && !remoteSSHChannel.destroyed) {
+                        remoteSSHChannel.write(command);
+                    }
+                };
+        } else {
+            const serverInstance: ChildProcessWithoutNullStreams = spawn(serverExecutedPath);
+
+            serverInstance.on("close", (code: number, signal: string): void => {
+                process.exit(0);
+            });
+
+            serverInstance.stdout.on("data", (chunk: Buffer): void => {
+                logger.info(chunk.toString());
+                serverOutputReceiver.emit("output", chunk.toString());
+            });
+
+            process.stdin.on("data", (chunk: Buffer): void => {
+                serverInstance.stdin.write(chunk);
+            });
+
+            serverCommandSender = (command: string): void => {
+                serverInstance.stdin.write(command);
+            };
+        }
+
+        const socketServer: SocketServer = new SocketServer(aliasName);
+        await socketServer.start();
+
+        socketServer.on("message", (socket: Socket, message: string): void => {
+            if (message === "0") {
+                const remoteConfiguration: {
+                    path: string;
+                    host: string;
+                    port: number;
+                    username: string;
+                    password: string;
+                } = {
+                    path: this.getRootPath(),
+                    host: this.remoteHost,
+                    port: this.remotePort,
+                    username: this.remoteUsername,
+                    password: this.remotePassword
+                }
+
+                socketServer.sendMessage(JSON.stringify(remoteConfiguration, null, 4));
+            } else if (message.startsWith("1")) {
+                const pluginName: string = message.split("_")[1];
+
+                serverOutputReceiver.on("output", (output: string): void => {
+                    if (output.includes(`Reload mod ${pluginName} successfully`)) {
+                        socket.destroy();
+                    }
+                });
+
+                serverCommandSender(`ll reload ${pluginName}\n`);
+            }
+        });
+    }
+
     public async removePlugin(pluginName: string): Promise<void> {
-        const pluginPath: string = Path.join(this.pluginDirectory, pluginName.replace("/", "-").replace("@",""));
+        const pluginPath: string = Path.join(
+            this.pluginDirectory,
+            pluginName.replace("/", "-").replace("@","")
+        );
 
         if (this.remoteHost === "localhost") {
             if (File.existsSync(pluginPath)) {
@@ -74,7 +179,9 @@ export class LeviLaminaServer {
                 throw new RemoteSSHConnectionError(this);
             }
 
-            const result: SSHExecCommandResponse = await remoteSSH.execCommand(`if exist "${pluginPath}" (echo true) else (echo false)`);
+            const result: SSHExecCommandResponse = await remoteSSH.execCommand(
+                `if exist "${pluginPath}" (echo true) else (echo false)`
+            );
 
             if (result.stdout.trim() === "true") {
                 await remoteSSH.execCommand(`rmdir /s /q "${pluginPath}"`);
@@ -82,11 +189,8 @@ export class LeviLaminaServer {
                 throw new LeviLaminaPluginNotFoundError(pluginName);
             }
 
-            // Ignore errors from remoteSSH.dispose().
-            remoteSSH.connection.on("error", (error: { code: string; }): void => {
-                if (error.code !== 'ECONNRESET') {
-                    throw new RemoteSSHConnectionError(this);
-                }
+            remoteSSH.connection?.on("error", (error: (Error & ClientErrorExtensions)): void => {
+               // Ignore errors from remoteSSH.dispose().
             });
 
             remoteSSH.dispose();
@@ -143,11 +247,8 @@ export class LeviLaminaServer {
             *      }
             */
 
-            // Ignore errors from remoteSSH.dispose().
-            remoteSSH.connection.on("error", (error: { code: string; }): void => {
-                if (error.code !== 'ECONNRESET') {
-                    throw new RemoteSSHConnectionError(this);
-                }
+            remoteSSH.connection?.on("error", (error: (Error & ClientErrorExtensions)): void => {
+                // Ignore errors from remoteSSH.dispose().
             });
 
             remoteSSH.dispose();
@@ -155,7 +256,7 @@ export class LeviLaminaServer {
             await pluginPackage.expand(this.pluginDirectory);
         }
 
-        return `The Plugin has been imported to LeviLamina ${this.getRootPath()}${this.remoteHost === "localhost" ? "" : " in " + this.getRemoteAddress(false)}.`;
+        return `The plugin has been imported to LeviLamina ${this.getRootPath()}${this.remoteHost === "localhost" ? "" : " in " + this.getRemoteAddress(false)}.`;
     }
 
     public getRootPath(): string {

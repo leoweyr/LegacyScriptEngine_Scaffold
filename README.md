@@ -14,44 +14,78 @@ npm install @levimc-lse/scaffold --save-dev
 
 ## 🚀 Usage
 
-Generate manifest.json for the Legacy Script Engine plugin:
+### Generate manifest.json for the Legacy Script Engine plugin
 
 ```bash
 npx lses manifest
 ```
 
-Package the Legacy Script Engine plugin:
+### Package the Legacy Script Engine plugin
 
 ```bash
 npx lses pack
 ```
 
-Deploy the Legacy Script Engine plugin package to the LeviLamina server:
+### Deploy the Legacy Script Engine plugin package to the LeviLamina server by path
+
+> ⚠️ **Known Issue**
+>
+> When deploying to a remote LeviLamina server where the target plugin has never been installed before, the local terminal may still be waiting after the deployment task is completed, please use CTRL + C to manually terminate the local terminal.
 
 ```bash
-npx lses deploy <path> [options]
+npx lses deploy-path <path> [options]
 ```
 
 | Argument | Description                                   | Type   |
 |----------|-----------------------------------------------|--------|
 | `<path>` | Specific LeviLamina server working directory. | String |
 
-| Option                            | Description                     | Type    | Default |
-|-----------------------------------|---------------------------------|---------|---------|
-| `-h, --host <remoteHost>`         | Remote Windows OpenSSH host     | String  |         |
-| `-P, --port <remotePort>`         | Remote Windows OpenSSH port     | Integer | 22      |
-| `-u, --username <remoteUsername>` | Remote Windows OpenSSH username | String  |         |
-| `-p, --password <remotePassword>` | Remote Windows OpenSSH password | String  |         |
+| Option                            | Description                      | Type    | Default |
+| --------------------------------- | -------------------------------- | ------- | ------- |
+| `-h, --host <remoteHost>`         | Remote Windows OpenSSH host.     | String  |         |
+| `-P, --port <remotePort>`         | Remote Windows OpenSSH port.     | Integer | 22      |
+| `-u, --username <remoteUsername>` | Remote Windows OpenSSH username. | String  |         |
+| `-p, --password <remotePassword>` | Remote Windows OpenSSH password. | String  |         |
 
-> ⚠️ **Known Issue**
+### Launch a LeviLamina server as a debugger
+
+```bash
+npx lses debug <path> <name> [options]
+```
+
+| Argument | Description                                   | Type   |
+| -------- | --------------------------------------------- | ------ |
+| `<path>` | Specific LeviLamina server working directory. | String |
+| `<name>` | Alias name for the debugger instance.         | String |
+
+| Option                            | Description                      | Type    | Default |
+| --------------------------------- | -------------------------------- | ------- | ------- |
+| `-h, --host <remoteHost>`         | Remote Windows OpenSSH host.     | String  |         |
+| `-P, --port <remotePort>`         | Remote Windows OpenSSH port.     | Integer | 22      |
+| `-u, --username <remoteUsername>` | Remote Windows OpenSSH username. | String  |         |
+| `-p, --password <remotePassword>` | Remote Windows OpenSSH password. | String  |         |
+
+### Deploy the Legacy Script Engine plugin package to the LeviLamina server debugger instance
+
+> 💡  **Key Feature**
 >
-> When deploying to a remote LeviLamina server where the target plugin has never been installed before, the local terminal may still be waiting after the deployment task is completed, please use CTRL + C to manually terminate the local terminal.
+> Compared to `npx lses deploy-path`, this deployment method automatically hot reloads the plugin.
+
+```bash
+npx lses deploy-debug <debuggerName>
+```
+
+| Argument         | Description                                        | Type   |
+| ---------------- | -------------------------------------------------- | ------ |
+| `<debuggerName>` | Specific LeviLamina server debugger instance name. | String |
 
 
 ## ❗ Important
 
-The `main` configuration entry file in package.json should be relative to the project's working directory, <font color="red">not the directory of the Legacy Script Engine plugin package.</font>
+1. The `main` configuration entry file in package.json should be relative to the project's working directory, <font color="red">not the directory of the Legacy Script Engine plugin package.</font> 
 
-For example, in a TypeScript project where index.ts is defined as the entry point in source code and the TypeScript compiler is configured via tsconfig.json to emit to the build directory named dist, you should set the `main` field in package.json to `dist/index.js`. 
+   For example, in a TypeScript project where index.ts is defined as the entry point in source code and the TypeScript compiler is configured via tsconfig.json to emit to the build directory named dist, you should set the `main` field in package.json to `dist/index.js`. 
 
-This ensures that the `entry` field in the manifest.json generated by `npx lses manifest` can be correctly identified and located by LeviLamina.
+   This ensures that the `entry` field in the manifest.json generated by `npx lses manifest` can be correctly identified and located by LeviLamina.
+
+2. Ensure that the corresponding LeviLamina server debugger instance exists before using `npx lses deploy-debug`, so need to launch it first using `npx lses debug`.
