@@ -90,10 +90,10 @@ program
     .command("deploy-path")
     .description("deploy the Legacy Script Engine plugin package to the LeviLamina server by path")
     .argument("<path>", "specific LeviLamina server working directory")
-    .option("-h, --host <remoteHost>", "remote Windows OpenSSH host")
-    .option("-P, --port <remotePort>", "remote Windows OpenSSH port", "22")
-    .option("-u, --username <remoteUsername>", "remote Windows OpenSSH username")
-    .option("-p, --password <remotePassword>", "remote Windows OpenSSH password")
+    .option("-h, --host <remote-host>", "remote Windows OpenSSH host")
+    .option("-P, --port <remote-port>", "remote Windows OpenSSH port", "22")
+    .option("-u, --username <remote-username>", "remote Windows OpenSSH username")
+    .option("-p, --password <remote-password>", "remote Windows OpenSSH password")
     .action(async (
         path: string,
         options: {
@@ -111,7 +111,7 @@ program
 program
     .command("deploy-debug")
     .description("deploy the Legacy Script Engine plugin package to the LeviLamina server debugger instance")
-    .argument("<debuggerName>", "specific LeviLamina server debugger instance name")
+    .argument("<debugger-name>", "specific LeviLamina server debugger instance name")
     .action(async (debuggerName: string): Promise<void> => {
         const logger = new CliLogger("deploy-debug");
 
@@ -168,10 +168,10 @@ program
     .description("launch a LeviLamina server as a debugger")
     .argument("<path>", "specific LeviLamina server working directory")
     .argument("<name>", "alias name for the debugger instance")
-    .option("-h, --host <remoteHost>", "remote Windows OpenSSH host")
-    .option("-P, --port <remotePort>", "remote Windows OpenSSH port", "22")
-    .option("-u, --username <remoteUsername>", "remote Windows OpenSSH username")
-    .option("-p, --password <remotePassword>", "remote Windows OpenSSH password")
+    .option("-h, --host <remote-host>", "remote Windows OpenSSH host")
+    .option("-P, --port <remote-port>", "remote Windows OpenSSH port", "22")
+    .option("-u, --username <remote-username>", "remote Windows OpenSSH username")
+    .option("-p, --password <remote-password>", "remote Windows OpenSSH password")
     .action(async (
         path: string,
         name: string,
