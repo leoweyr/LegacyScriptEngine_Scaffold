@@ -42,12 +42,12 @@ npx lses deploy-path <path> [options]
 |----------|-----------------------------------------------|--------|
 | `<path>` | Specific LeviLamina server working directory. | String |
 
-| Option                            | Description                      | Type    | Default |
-| --------------------------------- | -------------------------------- | ------- | ------- |
-| `-h, --host <remoteHost>`         | Remote Windows OpenSSH host.     | String  |         |
-| `-P, --port <remotePort>`         | Remote Windows OpenSSH port.     | Integer | 22      |
-| `-u, --username <remoteUsername>` | Remote Windows OpenSSH username. | String  |         |
-| `-p, --password <remotePassword>` | Remote Windows OpenSSH password. | String  |         |
+| Option                             | Description                      | Type    | Default |
+|------------------------------------| -------------------------------- | ------- | ------- |
+| `-h, --host <remote-host>`         | Remote Windows OpenSSH host.     | String  |         |
+| `-P, --port <remote-port>`         | Remote Windows OpenSSH port.     | Integer | 22      |
+| `-u, --username <remote-username>` | Remote Windows OpenSSH username. | String  |         |
+| `-p, --password <remote-password>` | Remote Windows OpenSSH password. | String  |         |
 
 ### Launch a LeviLamina server as a debugger
 
@@ -60,12 +60,12 @@ npx lses debug <path> <name> [options]
 | `<path>` | Specific LeviLamina server working directory. | String |
 | `<name>` | Alias name for the debugger instance.         | String |
 
-| Option                            | Description                      | Type    | Default |
-| --------------------------------- | -------------------------------- | ------- | ------- |
-| `-h, --host <remoteHost>`         | Remote Windows OpenSSH host.     | String  |         |
-| `-P, --port <remotePort>`         | Remote Windows OpenSSH port.     | Integer | 22      |
-| `-u, --username <remoteUsername>` | Remote Windows OpenSSH username. | String  |         |
-| `-p, --password <remotePassword>` | Remote Windows OpenSSH password. | String  |         |
+| Option                             | Description                      | Type    | Default |
+|------------------------------------| -------------------------------- | ------- | ------- |
+| `-h, --host <remote-host>`         | Remote Windows OpenSSH host.     | String  |         |
+| `-P, --port <remote-port>`         | Remote Windows OpenSSH port.     | Integer | 22      |
+| `-u, --username <remote-username>` | Remote Windows OpenSSH username. | String  |         |
+| `-p, --password <remote-password>` | Remote Windows OpenSSH password. | String  |         |
 
 ### Deploy the Legacy Script Engine plugin package to the LeviLamina server debugger instance
 
@@ -74,12 +74,12 @@ npx lses debug <path> <name> [options]
 > Compared to `npx lses deploy-path`, this deployment method automatically hot reloads the plugin.
 
 ```bash
-npx lses deploy-debug <debuggerName>
+npx lses deploy-debug <debugger-name>
 ```
 
-| Argument         | Description                                        | Type   |
-| ---------------- | -------------------------------------------------- | ------ |
-| `<debuggerName>` | Specific LeviLamina server debugger instance name. | String |
+| Argument          | Description                                        | Type   |
+|-------------------| -------------------------------------------------- | ------ |
+| `<debugger-name>` | Specific LeviLamina server debugger instance name. | String |
 
 
 ## ❗ Important
