@@ -41,6 +41,7 @@ async function deploy(
         }
 
         const successMessage: string = await leviLaminaServer.importPlugin(pluginPackage);
+
         logger.success(successMessage);
     } catch (error) {
         logger.error(error as CliLoggableError);
