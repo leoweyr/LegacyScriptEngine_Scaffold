@@ -4,8 +4,7 @@ import { EventEmitter } from "node:events";
 import { ChildProcessWithoutNullStreams, spawn } from "node:child_process";
 import { Socket } from "node:net";
 
-import { Client, ClientChannel, ClientErrorExtensions } from "ssh2";
-import { NodeSSH, SSHExecCommandResponse } from "node-ssh";
+import { Client, ClientChannel, ClientErrorExtensions, SFTPWrapper } from "ssh2";
 
 import { CliLogger } from "../cli/CliLogger";
 import { SocketServer } from "../debugger/SocketServer";
@@ -166,92 +165,153 @@ export class LeviLaminaServer {
                 throw new LeviLaminaPluginNotFoundError(pluginName);
             }
         } else {
-            const remoteSSH: NodeSSH = new NodeSSH();
+            const remoteSSH: Client = new Client();
 
             try {
-                await remoteSSH.connect({
-                    host: this.remoteHost,
-                    port: this.remotePort,
-                    username: this.remoteUsername,
-                    password: this.remotePassword
+                await new Promise<void>((resolve, reject): void => {
+                    remoteSSH
+                        .on('ready', (): void => resolve())
+                        .on(
+                            'error',
+                            (error: Error & ClientErrorExtensions): void => reject(new RemoteSSHConnectionError(this))
+                        )
+                        .connect({
+                            host: this.remoteHost,
+                            port: this.remotePort,
+                            username: this.remoteUsername,
+                            password: this.remotePassword
+                        });
                 });
             } catch (error) {
                 throw new RemoteSSHConnectionError(this);
             }
 
-            const result: SSHExecCommandResponse = await remoteSSH.execCommand(
-                `if exist "${pluginPath}" (echo true) else (echo false)`
-            );
+            try {
+                const result: { stdout: string } = await new Promise<{ stdout: string }>((resolve, reject): void => {
+                    remoteSSH.exec(
+                        `if exist "${pluginPath}" (echo true) else (echo false)`,
+                        (error: Error | undefined, stream: ClientChannel): void => {
+                            if (error) {
+                                reject(error);
 
-            if (result.stdout.trim() === "true") {
-                await remoteSSH.execCommand(`rmdir /s /q "${pluginPath}"`);
-            } else {
-                throw new LeviLaminaPluginNotFoundError(pluginName);
+                                return;
+                            }
+
+                            let stdout: string = '';
+
+                            stream
+                                .on('data', (chunk: Buffer): void => {
+                                    stdout += chunk.toString();
+                                })
+                                .on('end', (): void => {
+                                    resolve({ stdout });
+                                })
+                                .on('error', reject);
+                        }
+                    );
+                });
+
+                if (result.stdout.trim() === "true") {
+                    await new Promise<void>((resolve, reject): void => {
+                        remoteSSH.exec(
+                            `rmdir /s /q "${pluginPath}"`,
+                            (error: Error | undefined, stream: ClientChannel): void => {
+                                if (error) {
+                                    reject(error);
+
+                                    return;
+                                }
+
+                                stream
+                                    .on('end', (): void => resolve())
+                                    .on('error', reject);
+                            }
+                        );
+                    });
+                } else {
+                    remoteSSH.end();
+
+                    throw new LeviLaminaPluginNotFoundError(pluginName);
+                }
+            } finally {
+                remoteSSH.end();
             }
-
-            remoteSSH.connection?.on("error", (error: (Error & ClientErrorExtensions)): void => {
-               // Ignore errors from remoteSSH.dispose().
-            });
-
-            remoteSSH.dispose();
         }
     }
 
     public async importPlugin(pluginPackage: PluginPackage): Promise<string> {
         if (this.remoteHost !== "localhost") {
-            const remoteSSH: NodeSSH = new NodeSSH();
+            const remoteSSH: Client = new Client();
 
             try {
-                await remoteSSH.connect({
-                    host: this.remoteHost,
-                    port: this.remotePort,
-                    username: this.remoteUsername,
-                    password: this.remotePassword
+                await new Promise<void>((resolve, reject): void => {
+                    remoteSSH
+                        .on('ready', (): void => resolve())
+                        .on(
+                            'error',
+                            (error: Error & ClientErrorExtensions): void => reject(new RemoteSSHConnectionError(this))
+                        )
+                        .connect({
+                            host: this.remoteHost,
+                            port: this.remotePort,
+                            username: this.remoteUsername,
+                            password: this.remotePassword
+                        });
                 });
-
             } catch (error) {
                 throw new RemoteSSHConnectionError(this);
             }
 
-            const remotePluginPackagePath: string = Path.join(this.pluginDirectory, pluginPackage.getName(), ".zip");
+            const remotePluginPackagePath: string = Path.join(this.pluginDirectory, `${pluginPackage.getName()}.zip`);
 
             try {
-                await remoteSSH.putFile(pluginPackage.getPath(), remotePluginPackagePath);
-            } catch (error) {
-                throw new RemoteSSHFileUploadError(pluginPackage.getPath(), this);
+                await new Promise<void>((resolve, reject): void => {
+                    remoteSSH.sftp((error: Error | undefined, sftp: SFTPWrapper): void => {
+                        if (error) {
+                            reject(error);
+
+                            return;
+                        }
+
+                        sftp.fastPut(
+                            pluginPackage.getPath(),
+                            remotePluginPackagePath,
+                            (error: Error | null | undefined): void => {
+                                if (error) {
+                                    reject(new RemoteSSHFileUploadError(pluginPackage.getPath(), this));
+                                } else {
+                                    sftp.end();
+
+                                    resolve();
+                                }
+                            }
+                        );
+                    });
+                });
+
+                await new Promise<void>((resolve, reject): void => {
+                    remoteSSH.exec(
+                        `powershell -command "Expand-Archive -Path ${remotePluginPackagePath} -DestinationPath ${Path.join(this.pluginDirectory, pluginPackage.getName())}" && del ${remotePluginPackagePath}`,
+                        (error: Error | undefined, stream: ClientChannel): void => {
+                            if (error) {
+                                reject(new RemotePluginInstallationError(this));
+
+                                return;
+                            }
+                            
+                            stream
+                                .on('end', (): void => resolve())
+                                .on('close', (): void => resolve())
+                                .on('error', (error: Error): void => reject(new RemotePluginInstallationError(this)));
+
+                            // Workaround for SSH channel not receiving execution completion signals.
+                            setTimeout((): void => resolve(), 3000);
+                        }
+                    );
+                })
+            } finally {
+                remoteSSH.end();
             }
-
-            try {
-                await remoteSSH.execCommand(
-                    `powershell -command "Expand-Archive -Path ${remotePluginPackagePath} -DestinationPath ${Path.join(this.pluginDirectory, pluginPackage.getName())}" && del ${remotePluginPackagePath}`
-                );
-            } catch (error) {
-                throw new RemotePluginInstallationError(this);
-            }
-
-            /* TODO: Enhancement Required - Need a more elegant solution to handle the following issue,
-            *  instead of adding event listeners that cause the task to wait for termination even after completion:
-            *
-            *  Error: read ECONNRESET
-            *      at TCP.onStreamRead (node:internal/stream_base_commons:216:20)
-            *   Emitted 'error' event on Client instance at:
-            *      at Socket.<anonymous> (node_modules/ssh2/lib/client.js:805:12)
-            *      at Socket.emit (node:events:518:28)
-            *      at emitErrorNT (node:internal/streams/destroy:170:8)
-            *      at emitErrorCloseNT (node:internal/streams/destroy:129:3)
-            *      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
-            *        errno: -4077,
-            *        code: 'ECONNRESET',
-            *        syscall: 'read',
-            *        level: 'client-socket'
-            *      }
-            */
-
-            remoteSSH.connection?.on("error", (error: (Error & ClientErrorExtensions)): void => {
-                // Ignore errors from remoteSSH.dispose().
-            });
-
-            remoteSSH.dispose();
         } else {
             await pluginPackage.expand(this.pluginDirectory);
         }

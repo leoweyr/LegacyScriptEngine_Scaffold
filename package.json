@@ -42,7 +42,6 @@
         "archiver": "^7.0.1",
         "commander": "^13.1.0",
         "unzipper": "^0.12.3",
-        "node-ssh": "^13.2.1",
         "ssh2": "^1.17.0"
     },
     "repository": {
