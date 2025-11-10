@@ -1,4 +1,13 @@
-# [1.0.0-rc.1](https://github.com/leoweyr/LegacyScriptEngine_Scaffold/compare/v0.2.1...v1.0.0-rc.1) (2025-11-04)
+# [1.0.0](https://github.com/leoweyr/LegacyScriptEngine_Scaffold/compare/v0.2.2...v1.0.0) (2025-11-10)
+
+
+### Bug Fixes
+
+* resolve hanging terminal issue when deploying new plugins to remote LeviLamina server ([64b1d0e](https://github.com/leoweyr/LegacyScriptEngine_Scaffold/commit/64b1d0eb70d14c7dee5d634be2b247d872bfa4f2))
+
+
+
+# [1.0.0-rc.1](https://github.com/leoweyr/LegacyScriptEngine_Scaffold/compare/v0.2.2...v1.0.0-rc.1) (2025-11-04)
 
 
 ### Known Issues

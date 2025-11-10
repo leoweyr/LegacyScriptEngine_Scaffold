@@ -30,10 +30,6 @@ npx lses pack
 
 ### 根据路径将 Legacy Script Engine 插件包部署到 LeviLamina 服务器
 
-> ⚠️ **已知问题**
->
-> 当部署到从未安装过目标插件的远程 LeviLamina 服务器时，部署任务完成后本地终端可能仍在等待，请使用 CTRL + C 手动终止本地终端。
-
 ```bash
 npx lses deploy-path <path> [options]
 ```

@@ -30,10 +30,6 @@ npx lses pack
 
 ### Deploy the Legacy Script Engine plugin package to the LeviLamina server by path
 
-> ⚠️ **Known Issue**
->
-> When deploying to a remote LeviLamina server where the target plugin has never been installed before, the local terminal may still be waiting after the deployment task is completed, please use CTRL + C to manually terminate the local terminal.
-
 ```bash
 npx lses deploy-path <path> [options]
 ```
