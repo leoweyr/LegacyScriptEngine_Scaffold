@@ -1,4 +1,27 @@
-## [0.2.2](https://github.com/leoweyr/LSEScaffold/compare/v0.2.1...v0.2.2) (2025-06-15)
+# [1.0.0](https://github.com/leoweyr/LegacyScriptEngine_Scaffold/compare/v0.2.2...v1.0.0) (2025-11-10)
+
+
+### Bug Fixes
+
+* resolve hanging terminal issue when deploying new plugins to remote LeviLamina server ([64b1d0e](https://github.com/leoweyr/LegacyScriptEngine_Scaffold/commit/64b1d0eb70d14c7dee5d634be2b247d872bfa4f2))
+
+
+
+# [1.0.0-rc.1](https://github.com/leoweyr/LegacyScriptEngine_Scaffold/compare/v0.2.2...v1.0.0-rc.1) (2025-11-04)
+
+
+### Known Issues
+
+* When deploying to a remote LeviLamina server where the target plugin has never been installed before, the local terminal may still be waiting after the deployment task is completed.
+
+### Features
+
+* **cli:** add LeviLamina server debugging functionality with automatic plugin hot-reload when deploying to debugger ([605aa81](https://github.com/leoweyr/LegacyScriptEngine_Scaffold/commit/605aa8143d618aa11d3798d073cc6d3dd17cec90))
+* **cli:** enable remote deployment capability for deploy ([58efafd](https://github.com/leoweyr/LegacyScriptEngine_Scaffold/commit/58efafda6124007f0c3c40943037aa06636a3481))
+
+
+
+# [0.2.2](https://github.com/leoweyr/LSEScaffold/compare/v0.2.1...v0.2.2) (2025-06-15)
 
 
 ### Bug Fixes
@@ -7,7 +30,7 @@
 
 
 
-## [0.2.1](https://github.com/leoweyr/LSEScaffold/compare/v0.2.0...v0.2.1) (2025-01-27)
+# [0.2.1](https://github.com/leoweyr/LSEScaffold/compare/v0.2.0...v0.2.1) (2025-01-27)
 
 
 ### Bug Fixes
@@ -17,7 +40,7 @@
 
 
 
-## [0.2.0](https://github.com/leoweyr/LSEScaffold/compare/v0.1.0...v0.2.0) (2025-01-25)
+# [0.2.0](https://github.com/leoweyr/LSEScaffold/compare/v0.1.0...v0.2.0) (2025-01-25)
 
 
 ### Features
@@ -28,7 +51,7 @@
 
 
 
-## [0.1.0](https://github.com/leoweyr/LSEScaffold/compare/13da1825083f91d0b7fed1ffc5f56ccc3159695f...v0.1.0) (2025-01-25)
+# [0.1.0](https://github.com/leoweyr/LSEScaffold/compare/13da1825083f91d0b7fed1ffc5f56ccc3159695f...v0.1.0) (2025-01-25)
 
 
 ### Features

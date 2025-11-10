@@ -1,4 +1,4 @@
-import { CliLoggableError } from "./CliLoggableError";
+import { CliLoggableError } from "./exceptions/CliLoggableError";
 
 
 export class CliLogger {
@@ -19,23 +19,33 @@ export class CliLogger {
     public error(error: CliLoggableError): void {
         let suggestionString: string = "";
 
-        if (error.getSuggestion().length === 1) {
-           suggestionString += `Suggestion: ${error.getSuggestion()[0]}`;
-        } else {
-            suggestionString += "Suggestions:\n";
+        try {
+            if (error.getSuggestion().length === 1) {
+                suggestionString += `Suggestion: ${error.getSuggestion()[0]}`;
+            } else {
+                suggestionString += "Suggestions:\n";
 
-            let solutionIndex: number = 1;
+                let solutionIndex: number = 1;
 
-            for (const solution of error.getSuggestion()) {
-                suggestionString += `   ${solutionIndex}. ${solution}\n`;
-                solutionIndex++;
+                for (const solution of error.getSuggestion()) {
+                    suggestionString += `   ${solutionIndex}. ${solution}\n`;
+                    solutionIndex++;
+                }
+
+                suggestionString = suggestionString.slice(0, -2);  // Remove the last newline.
             }
 
-            suggestionString = suggestionString.slice(0, -2);  // Remove the last newline.
+            console.error(
+                `❌ ${CliLogger.TOOL_NAME}::${this.methodName}: ${error.constructor.name} - ${error.getMessage()}\n   ${suggestionString}`
+            );
+        } catch (notCliLoggableError) {
+            throw error;
         }
+    }
 
-        console.error(
-            `❌ ${CliLogger.TOOL_NAME}::${this.methodName}: ${error.constructor.name} - ${error.getMessage()}\n   ${suggestionString}`
+    public info(msg: string): void {
+        console.log(
+            `ℹ️ ${CliLogger.TOOL_NAME}::${this.methodName}: ${msg}`
         );
     }
 }

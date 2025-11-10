@@ -1,7 +1,7 @@
-import { CliLoggableError } from "../cli/CliLoggableError";
+import { CliLoggableError } from "../../cli/exceptions/CliLoggableError";
 
 
-export class ManifestConfigurationMissingError extends Error implements CliLoggableError {
+export class TypeScriptConfigurationMissingError extends Error implements CliLoggableError {
     private readonly msg: string;
     private readonly missingProperty: string;
 
@@ -20,7 +20,7 @@ export class ManifestConfigurationMissingError extends Error implements CliLogga
 
     public getSuggestion(): Array<string> {
         const suggestion: Array<string> = new Array<string>();
-        suggestion.push(`Try checking if manifest.json includes the \`${this.missingProperty}\` configuration.`);
+        suggestion.push(`Try checking if tsconfig.json includes the \`${this.missingProperty}\` configuration.`);
 
         return suggestion;
     }

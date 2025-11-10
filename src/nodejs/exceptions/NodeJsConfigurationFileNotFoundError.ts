@@ -1,11 +1,11 @@
-import { CliLoggableError } from "../cli/CliLoggableError";
+import { CliLoggableError } from "../../cli/exceptions/CliLoggableError";
 
 
-export class TypeScriptConfigurationFileNotFoundError extends Error implements CliLoggableError {
+export class NodeJsConfigurationFileNotFoundError extends Error implements CliLoggableError {
     private readonly msg: string;
 
     public constructor(fileDirectory: string) {
-        const message: string = `Could not find tsconfig.json in ${fileDirectory}.`;
+        const message: string = `Could not find package.json in ${fileDirectory}.`;
 
         super(message);
 
@@ -18,7 +18,7 @@ export class TypeScriptConfigurationFileNotFoundError extends Error implements C
 
     public getSuggestion(): Array<string> {
         const suggestion: Array<string> = new Array<string>();
-        suggestion.push("Try `npx tsc --init` to initialize the TypeScript project.");
+        suggestion.push("Try `npm init` to initialize the project.");
 
         return suggestion;
     }

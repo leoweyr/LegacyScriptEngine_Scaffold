@@ -4,9 +4,9 @@ import * as File from "fs";
 import ts, { ParsedCommandLine, Program } from "typescript";
 
 import { Project } from "../project/Project";
-import { TypeScriptConfigurationParseError } from "./TypeScriptConfigurationParseError";
-import { TypeScriptConfigurationFileNotFoundError } from "./TypeScriptConfigurationFileNotFoundError";
-import { TypeScriptConfigurationMissingError } from "./TypeScriptConfigurationMissingError";
+import { TypeScriptConfigurationParseError } from "./exceptions/TypeScriptConfigurationParseError";
+import { TypeScriptConfigurationFileNotFoundError } from "./exceptions/TypeScriptConfigurationFileNotFoundError";
+import { TypeScriptConfigurationMissingError } from "./exceptions/TypeScriptConfigurationMissingError";
 
 
 export class TypeScriptConfiguration {

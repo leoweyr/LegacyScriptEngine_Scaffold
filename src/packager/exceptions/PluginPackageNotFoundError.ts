@@ -1,4 +1,4 @@
-import { CliLoggableError } from "../cli/CliLoggableError";
+import { CliLoggableError } from "../../cli/exceptions/CliLoggableError";
 
 
 export class PluginPackageNotFoundError extends Error implements CliLoggableError {
@@ -15,7 +15,7 @@ export class PluginPackageNotFoundError extends Error implements CliLoggableErro
     public getSuggestion(): Array<string> {
         const suggestion: Array<string> = new Array<string>();
 
-        suggestion.push("Try `npx lses pack` to pack the project.");
+        suggestion.push("Try `npx lses pack` to pack the project before.");
 
         return suggestion;
     }

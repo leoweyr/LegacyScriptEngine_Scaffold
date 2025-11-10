@@ -2,8 +2,8 @@ import * as Path from "path";
 import * as File from "fs";
 
 import { Project } from "../project/Project";
-import { NodeJsConfigurationFileNotFoundError } from "./NodeJsConfigurationFileNotFoundError";
-import { NodeJsConfigurationMissingError } from "./NodeJsConfigurationMissingError";
+import { NodeJsConfigurationFileNotFoundError } from "./exceptions/NodeJsConfigurationFileNotFoundError";
+import { NodeJsConfigurationMissingError } from "./exceptions/NodeJsConfigurationMissingError";
 
 
 export class NodeJsConfiguration {

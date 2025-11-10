@@ -3,7 +3,7 @@ import * as Path from "path";
 
 import * as Unzipper from "unzipper";
 
-import { PluginPackageNotFoundError } from "./PluginPackageNotFoundError";
+import { PluginPackageNotFoundError } from "./exceptions/PluginPackageNotFoundError";
 
 
 export class PluginPackage {
